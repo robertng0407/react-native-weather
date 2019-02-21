@@ -10,16 +10,20 @@ import {
   StatusBar
 } from 'react-native';
 
-import getImageForWeather from './utils/getImageForWeather';
-import { fetchLocationId, fetchWeather } from './utils/api';
+import getImageForWeather from './src/utils/getImageForWeather';
+import { fetchLocationId, fetchWeather } from './src/utils/api';
 
-import SearchInput from './components/SearchInput';
+import SearchInput from './src/components/SearchInput';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: ''
+      location: '',
+      loading: false,
+      error: false,
+      temperature: 0,
+      weather: ''
     }
   }
 
