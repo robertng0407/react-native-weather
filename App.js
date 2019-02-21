@@ -27,8 +27,28 @@ export default class App extends React.Component {
     }
   }
 
-  handleUpdateLocation = (location) => {
-    this.setState({location});
+  handleUpdateLocation = async city => {
+    if (city.trim() === "") return;
+
+    this.setState({ loading: true }, async () => {
+      try {
+        const locationId = await fetchLocationId(city);
+        const { location, weather, temperature } = await fetchWeather(locationId);
+
+        this.setState({
+          location,
+          weather,
+          temperature,
+          loading: false,
+          error: false
+        });
+      } catch (e) {
+        this.setState({
+          loading: false,
+          error: true
+        })
+      }
+    });
   };
 
   componentDidMount() {
@@ -36,26 +56,54 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { loading, error, location, weather, temperature } = this.state; 
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <StatusBar barStyle="light-content" />
         <ImageBackground
-          source={getImageForWeather('Clear')}
+          source={getImageForWeather(weather)}
           style={styles.imageContainer}
           imageStyle={styles.image}>
           <View style={styles.detailsContainer}>
-            <Text style={[styles.largeText, styles.textStyle]}>
-              {this.state.location}
-            </Text>
+            <ActivityIndicator
+              animating={loading}
+              color="white"
+              size="large" />
+            {!loading && (
+              <View>
+                {error && (
+                  <Text style={[styles.smallText, styles.textStyle]}>
+                    Could not load weather, please try a different
+                    city.
+                  </Text>
+                )}
 
-            <Text style={[styles.smallText, styles.textStyle]}>
-              Light Cloud
-            </Text>
+                {!error && (
+                  <View>
+                    <Text
+                      style={[styles.largeText, styles.textStyle]}
+                    >
+                      {location}
+                    </Text>
+                    <Text
+                      style={[styles.smallText, styles.textStyle]}
+                    >
+                      {weather}
+                    </Text>
+                    <Text
+                      style={[styles.largeText, styles.textStyle]}
+                    >
+                      {`${Math.round(temperature)}°`}
+                    </Text>
+                  </View>
+                )}
 
-            <Text style={[styles.largeText, styles.textStyle]}>24°</Text>
-
-            <SearchInput 
-              placeholder="Search any city" 
-              onSubmit={this.handleUpdateLocation} />
+                <SearchInput
+                  placeholder="Search any city"
+                  onSubmit={this.handleUpdateLocation}
+                />
+              </View>
+            )}
           </View>
 
         </ImageBackground>
