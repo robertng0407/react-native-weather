@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
 class SearchInput extends Component {
     constructor(props) {
@@ -59,5 +60,14 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
+SearchInput.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    placeholder: PropTypes.string
+};
+
+SearchInput.defaultProps = {
+    placeholder: ''
+};
 
 export default SearchInput;
