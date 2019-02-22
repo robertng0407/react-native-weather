@@ -3,15 +3,12 @@ import { TextInput, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 class SearchInput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: ''
-        }
+    state = {
+        text: ''
     }
 
     handleChangeText = (text) => {
-        this.setState({text});
+        this.setState({ text });
     }
 
     handleSubmitEditing = () => {
@@ -21,11 +18,11 @@ class SearchInput extends Component {
 
         onSubmit(text);
 
-        this.setState({text: ''});
+        this.setState({ text: '' });
     };
 
     render() {
-        const{ placeholder } = this.props;
+        const { placeholder } = this.props;
         const { text } = this.state;
 
         return (

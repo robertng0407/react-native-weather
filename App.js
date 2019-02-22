@@ -16,15 +16,12 @@ import { fetchLocationId, fetchWeather } from './src/utils/api';
 import SearchInput from './src/components/SearchInput';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      location: '',
-      loading: false,
-      error: false,
-      temperature: 0,
-      weather: ''
-    }
+  state = {
+    location: '',
+    loading: false,
+    error: false,
+    temperature: 0,
+    weather: ''
   }
 
   handleUpdateLocation = async city => {
@@ -56,7 +53,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { loading, error, location, weather, temperature } = this.state; 
+    const { loading, error, location, weather, temperature } = this.state;
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <StatusBar barStyle="light-content" />
